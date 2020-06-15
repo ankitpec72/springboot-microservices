@@ -1,0 +1,104 @@
+---
+swagger: '2.0'
+info:
+  description: |
+    API to access and create customer.
+
+    Supported Use-Cases are:
+
+    * Create a new Customer
+    * Retrieve Customer
+
+  version: '1.0.0'
+  title: Customer Service API
+  contact:
+    name: Ankit Singh
+    email: er.ankitsingh2@gmail.com
+
+host: "customer-service.swagger.io"
+
+schemes:
+  - http
+  - https
+
+parameters:
+  # path parameters
+  customerId:
+    name: customer_id
+    in: path
+    description: customer Id
+    required: true
+    type: integer
+    format: int64
+
+paths:
+  /customers:
+    post:
+      summary: creates a customer
+      operationId: postCustomer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: customer
+          description: Customer to be created
+          required: true
+          schema:
+            $ref: '#/definitions/CustomerRequest'
+      responses:
+        201:
+          description: created
+          schema:
+            $ref: '#/definitions/CustomerResponse'
+  /customers/{customer_id}:
+    get:
+      summary: retrieve customer for given customer id
+      operationId: getCustomer
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/customerId'
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/CustomerResponse'
+
+definitions:
+  Customer:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: "The customer Id"
+      firstName:
+        type: string
+        description: "The first name"
+      lastName:
+        type: string
+        description: "The last name"
+      email:
+        type: string
+        description: "The email"
+      phone:
+        type: string
+        description: "The phone"
+    required:
+      - firstName
+      - lastName
+      - email
+      - phone
+
+  CustomerRequest:
+    allOf:
+      - $ref: '#/definitions/Customer'
+      - type: object
+
+  #response definitions
+  CustomerResponse:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Customer'

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>customer-service-parent</artifactId>
+        <groupId>org.example</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>customer-service-api-rest-feign</artifactId>
+    <properties>
+
+        <org.openapitools.version>3.2.1</org.openapitools.version>
+        <swagger-codegen.version>2.4.12</swagger-codegen.version>
+
+        <openapi.verbose>false</openapi.verbose>
+        <openapi.base>${project.basedir}/../customer-service-api-schema/src/main/resources/openapi</openapi.base>
+        <openapi.input.spec>${openapi.base}/schema/openapi.yaml</openapi.input.spec>
+        <openapi.template.directory>${project.basedir}/src/main/resources/openapi/templates</openapi.template.directory>
+        <openapi.package>com.sample.services.customer.api.client</openapi.package>
+        <openapi.package.model>${openapi.package}.model</openapi.package.model>
+        <openapi.package.api>${openapi.package}.feign</openapi.package.api>
+        <openapi.generator.name>java</openapi.generator.name>
+        <openapi.generate.apis>true</openapi.generate.apis>
+        <openapi.generate.models>true</openapi.generate.models>
+        <openapi.package.invoker>${openapi.package}.invoker</openapi.package.invoker>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>2.2.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.example</groupId>
+                        <artifactId>customer-service-api-schema</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <verbose>${openapi.verbose}</verbose>
+                            <inputSpec>${openapi.input.spec}</inputSpec>
+                            <library>spring-mvc</library>
+                            <language>spring</language>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <modelPackage>${openapi.package.model}</modelPackage>
+                                <apiPackage>${openapi.package.api}</apiPackage>
+                                <serializableModel>true</serializableModel>
+                                <java8>true</java8>
+                                <lang>spring</lang>
+                                <useBeanValidation>true</useBeanValidation>
+                                <addConsumesProducesJson>false</addConsumesProducesJson>
+                                <useAnnotatedBasePath>true</useAnnotatedBasePath>
+                                <interfaceOnly>true</interfaceOnly>
+                                <generateModels>${openapi.generate.models}</generateModels>
+                                <generateApis>${openapi.generate.apis}</generateApis>
+                            </configOptions>
+                            <templateDirectory>${openapi.template.directory}</templateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+            <version>${spring-cloud-openfeign-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>

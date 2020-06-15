@@ -1,0 +1,54 @@
+---
+spring:
+  application:
+    name: customer-service
+  jmx.default-domain: ${spring.application.name}
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+    default-property-inclusion: NON_NULL
+    deserialization.FAIL_ON_UNKNOWN_PROPERTIES: false
+    date-format: yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]'Z'
+    time-zone: UTC
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    datasource:
+      url: jdbc:h2:mem:testdb
+      driverClassName: org.h2.Driver
+      username: sa
+      password: password
+  main:
+    allow-bean-definition-overriding: true
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  flyway:
+    locations:
+      - classpath:db/migration
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: 8080
+
+logging:
+  level:
+    ROOT: INFO
+    org.apache.tomcat: INFO
+    org.apache.catalina: INFO
+    com.sun.xml: WARN
+    javax.xml: WARN
+    org.hibernate: ERROR
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    com.netflix: INFO
+    feign.Logger: DEBUG
+
+feign:
+  client:
+    default:
+      connect-timeout: 500
+      read-timeout: 4000

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <if condition='isDefined("LOG_ENABLE_LOGSTASH") &amp;&amp; p("LOG_ENABLE_LOGSTASH").contains("true")'>
+        <then>
+            <appender name="CONSOLE_SYNC_LOGSTASH" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+            </appender>
+            <appender name="CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+                <discardingThreshold>0</discardingThreshold>
+                <queueSize>10000</queueSize>
+                <appender-ref ref="CONSOLE_SYNC_LOGSTASH"/>
+            </appender>
+            <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </then>
+        <else>
+            <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+            <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </else>
+    </if>
+
+</configuration>
